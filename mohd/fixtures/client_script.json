@@ -9,5 +9,16 @@
   "name": "student_client_script",
   "script": "frappe.ui.form.on('student', {\r\n    \r\n\tbefore_save: function(frm) {\r\n\t    \r\n\t\tif (!frm.doc.first_name) {\r\n\t\t\tfrappe.throw(__('First Name is required'));\r\n\t\t}\r\n\t\t\r\n\t\tif (frm.doc.email_id && !frm.doc.email_id.includes('@')) {\r\n\t\t\tfrappe.throw(__('Email must contain \"@\" symbol'));\r\n\t\t}\r\n\t\t\r\n\t\t// Set nick_name to first_name\r\n\t\tif (frm.doc.first_name) {\r\n\t\t\tfrm.set_value('nick_name', frm.doc.first_name);\r\n\t\t}\r\n\t\t\r\n\t\t\r\n\t\t\r\n\t\tfrappe.call({\r\n\t\t\tmethod: \"frappe.client.insert\",\r\n\t\t\targs: {\r\n\t\t\t\tdoc: {\r\n\t\t\t\t\tdoctype: \"School\",\r\n\t\t\t\t\tstudent_name: frm.doc.first_name,\r\n\t\t\t\t\temail_id: frm.doc.email_id,\r\n\t\t\t\t\tschool_name: frm.doc.school_name\r\n\t\t\t\t}\r\n\t\t\t},\r\n\t\t\t\r\n\t\t});\r\n\t\t\r\n\t\t\r\n\t\t\r\n\t}\r\n\t\r\n});\r\n\r\n\r\n",
   "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "logikview",
+  "enabled": 1,
+  "modified": "2025-07-24 16:38:33.740547",
+  "module": "mohd",
+  "name": "Company's Policy",
+  "script": "frappe.ui.form.on('logikview', {\r\n\trefresh(frm) {\r\n\t\t// Auto-fill default salary discussion if empty\r\n\t\tif (!frm.doc.salary_discussion) {\r\n\t\t\tfrm.set_value('salary_discussion', 'Pending HR review');\r\n\t\t}\r\n\t},\r\n\r\n\tappraisal_date: function(frm) {\r\n\t\tconst today = frappe.datetime.get_today();\r\n\t\tconst appraisal = frm.doc.appraisal_date;\r\n\r\n\t\tif (appraisal && appraisal <= today) {\r\n\t\t\tfrm.set_value('stage', 'Appraised');\r\n\t\t} else {\r\n\t\t\tfrm.set_value('stage', 'Upcoming');\r\n\t\t}\r\n\t},\r\n\r\n\tincrement: function(frm) {\r\n\t\tconst val = frm.doc.increment;\r\n\t\tif (val && isNaN(val)) {\r\n\t\t\tfrappe.msgprint(__('Increment must be a number'));\r\n\t\t\tfrm.set_value('increment', '');\r\n\t\t}\r\n\t},\r\n\r\n\tsalary_discussion: function(frm) {\r\n\t\tif (frm.doc.salary_discussion) {\r\n\t\t\tfrappe.show_alert({\r\n\t\t\t\tmessage: __('Salary Discussion recorded'),\r\n\t\t\t\tindicator: 'green'\r\n\t\t\t}, 3);\r\n\t\t}\r\n\t}\r\n});\r\n",
+  "view": "Form"
  }
 ]
