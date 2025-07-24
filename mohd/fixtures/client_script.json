@@ -1,0 +1,13 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "student",
+  "enabled": 1,
+  "modified": "2025-07-24 11:53:41.834771",
+  "module": "mohd",
+  "name": "student_client_script",
+  "script": "frappe.ui.form.on('student', {\r\n    \r\n\tbefore_save: function(frm) {\r\n\t    \r\n\t\tif (!frm.doc.first_name) {\r\n\t\t\tfrappe.throw(__('First Name is required'));\r\n\t\t}\r\n\t\t\r\n\t\tif (frm.doc.email_id && !frm.doc.email_id.includes('@')) {\r\n\t\t\tfrappe.throw(__('Email must contain \"@\" symbol'));\r\n\t\t}\r\n\t\t\r\n\t\t// Set nick_name to first_name\r\n\t\tif (frm.doc.first_name) {\r\n\t\t\tfrm.set_value('nick_name', frm.doc.first_name);\r\n\t\t}\r\n\t\t\r\n\t\t\r\n\t\t\r\n\t\tfrappe.call({\r\n\t\t\tmethod: \"frappe.client.insert\",\r\n\t\t\targs: {\r\n\t\t\t\tdoc: {\r\n\t\t\t\t\tdoctype: \"School\",\r\n\t\t\t\t\tstudent_name: frm.doc.first_name,\r\n\t\t\t\t\temail_id: frm.doc.email_id,\r\n\t\t\t\t\tschool_name: frm.doc.school_name\r\n\t\t\t\t}\r\n\t\t\t},\r\n\t\t\t\r\n\t\t});\r\n\t\t\r\n\t\t\r\n\t\t\r\n\t}\r\n\t\r\n});\r\n\r\n\r\n",
+  "view": "Form"
+ }
+]

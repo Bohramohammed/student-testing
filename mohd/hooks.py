@@ -5,6 +5,13 @@ app_description = " "
 app_email = "test@test.com"
 app_license = "mit"
 
+fixtures = [
+    "Custom Field",
+    "Client Script",
+    "Server Script",
+    "Property Setter"
+]
+
 # Apps
 # ------------------
 
